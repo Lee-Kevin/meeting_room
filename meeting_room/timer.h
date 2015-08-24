@@ -1,6 +1,9 @@
 #ifndef TIMER_H
 #define TIMER_H
 #define EVERY_PIXEL 4
+#define RED 0
+#define GREEN 255
+#define BLUE 255
 
 static int stroke[4][7][5] = {
   {//first number
