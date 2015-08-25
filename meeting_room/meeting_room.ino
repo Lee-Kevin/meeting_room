@@ -15,7 +15,7 @@ void setup() {
   moudle.MoudleInit();
 
   matrix_pixels.begin(); 
-  matrix_pixels.setBrightness(10);
+  matrix_pixels.setBrightness(20);
 
   timer_pixels.begin();
   timer_pixels.setBrightness(10);
@@ -46,7 +46,7 @@ void print_in_use(){
   for(long i=0;i<255;i++){
     matrix_pixels.setPixelColor(i, 0);
   }
-  for(long i=0;i<78;i++){
+  for(long i=0;i<76;i++){
     matrix_pixels.setPixelColor(MATRIX_IN_USE[i], matrix_pixels.Color(150,0,0));
   }
 
