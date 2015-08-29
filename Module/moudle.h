@@ -20,6 +20,11 @@ typedef struct
   uint16_t  light;
   //PIR state
   uint8_t PIR_State;
+  //In Use Time
+  uint8_t InUseTime;
+  //Light Bar state
+  uint32_t LightBarState;
+  
   
 }MoudleStateStruct;
 
