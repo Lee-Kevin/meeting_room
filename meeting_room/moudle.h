@@ -16,10 +16,15 @@ typedef struct
   uint8_t  week;
   //button state
   uint16_t  button;
-  //light state
-  uint16_t  light;
+  //Light Intensity state
+  uint16_t  LightIntensity;
   //PIR state
   uint8_t PIR_State;
+  //In Use Time
+  uint8_t InUseTime;
+  //Light Bar state
+  uint32_t LightBarState;
+  
   
 }MoudleStateStruct;
 
@@ -34,7 +39,7 @@ class MoudleClass
   void PIRInit(void);
   void BuzzerInit(void);
   void KeyInit(void);
-  void LightInit(void);
+  void LightIntensityInit(void);
   
   public:
   void SetClock(uint16_t year,uint8_t month,uint8_t date,uint8_t hour,uint8_t min,uint8_t sec,uint8_t week);
@@ -43,7 +48,7 @@ class MoudleClass
   void MoudleInit(void);
 
   void KeyProc(void);
-  void GetLight(void);
+  void GetLightIntensity(void);
   void GetClock(void);
   void PIR_ClearState(void);
   void Loop(void);

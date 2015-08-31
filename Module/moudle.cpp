@@ -347,25 +347,19 @@ void MoudleClass::KeyProc(void)
     lastkey9 = key9;
 }
 
-void MoudleClass::KeyChange2LightBarState(void)
-{
-	static uint16_t LastState;
-	
-}
-
 /*------------------------------------------------------------------
 Light
 */
 
-void MoudleClass::LightInit(void)
+void MoudleClass::LightIntensityInit(void)
 {
   _Light.Begin();
 }
 
 
-void MoudleClass::GetLight(void)
+void MoudleClass::GetLightIntensity(void)
 {
-  MoudleState.light = _Light.ReadVisible();
+  MoudleState.LightIntensity = _Light.ReadVisible();
 }
 
 /*------------------------------------------------------------------
@@ -377,14 +371,14 @@ void MoudleClass::MoudleInit(void)
   PIRInit();
   BuzzerInit();
   KeyInit();
-  LightInit();
+  LightIntensityInit();
 }
 
 void MoudleClass::Loop(void)
 {
 	GetClock();
 	KeyProc();
-	GetLight();
+	GetLightIntensity();
 	PIR_ClearState();
 }
 

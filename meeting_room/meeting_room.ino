@@ -12,6 +12,7 @@ Adafruit_NeoPixel timer_pixels = Adafruit_NeoPixel(40, 8, NEO_GRB + NEO_KHZ800);
 void setup() {
   Serial.begin(115200);
   Serial.println("hello!");
+  moudle.SetClock(2015,8,8,19,23,30,1);
   moudle.MoudleInit();
 
   matrix_pixels.begin(); 
