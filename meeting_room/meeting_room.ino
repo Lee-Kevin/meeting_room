@@ -33,8 +33,9 @@ void loop() {
   if(MoudleState.PIR_State) {
       print_in_use();
       clear_all();
-      setNumber(1, 1);
-      setNumber(2, 0);
+      Serial.println(MoudleState.InUseTime,DEC);
+      setNumber(1, MoudleState.InUseTime/10);
+      setNumber(2, MoudleState.InUseTime%10);
       timer_pixels.show();
 
   } else {
