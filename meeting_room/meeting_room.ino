@@ -8,6 +8,7 @@
 MoudleClass moudle;
 Adafruit_NeoPixel matrix_pixels = Adafruit_NeoPixel(256, 6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel timer_pixels = Adafruit_NeoPixel(40, 8, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip_pixels = Adafruit_NeoPixel(18, 4, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   Serial.begin(115200);
@@ -20,6 +21,9 @@ void setup() {
 
   timer_pixels.begin();
   timer_pixels.setBrightness(10);
+
+  strip_pixels.begin();
+  strip_pixels.setBrightness(10);
 
 }
 
@@ -37,6 +41,10 @@ void loop() {
     print_free();
   }
 
+  for(int i=0; i<18; i++) {
+    strip_pixels.setPixelColor(i, strip_pixels.Color(0,150,0));
+  }
+  strip_pixels.show();
 
   delay(1000);
 
