@@ -20,6 +20,8 @@ typedef struct
   uint16_t  LightIntensity;
   //PIR state
   uint8_t PIR_State;
+  //LastPIR_State
+  uint8_t LastPIR_State;
   //In Use Time
   uint8_t InUseTime;
   //Light Bar state
@@ -50,7 +52,7 @@ class MoudleClass
   void KeyProc(void);
   void GetLightIntensity(void);
   void GetClock(void);
-  void PIR_ClearState(void);
+  void CheckState(void);
   void Loop(void);
 };
 

@@ -15,10 +15,11 @@
 #define KEY8_PIN 20
 #define KEY9_PIN 21
 
-#define PIR_CLEAR_TIME 10
+#define PIR_CLEAR_TIME 30
 
 MoudleStateStruct MoudleState;
 uint32_t IRQ_Time = 0;
+uint32_t StaticIRQ_Time = 0;
 /*------------------------------------------------------------------
 Clock
 */
@@ -42,7 +43,6 @@ void MoudleClass::GetClock(void)
   MoudleState.min = _DateTime.minute;
   MoudleState.sec = _DateTime.second;
   MoudleState.week = _DateTime.dayOfWeek;
-  Serial.print("sec:");Serial.println(_DateTime.second,DEC);
 }
 
 
@@ -73,25 +73,40 @@ void PIR_IRQHandler(void)
    IRQ_Time = MoudleState.hour*3600 + MoudleState.min*60 + MoudleState.sec;
 }
 
-void MoudleClass::PIR_ClearState(void)
+void MoudleClass::CheckState(void)
 {
 	uint16_t timetmp;
-	timetmp =MoudleState.hour*3600 + MoudleState.min*60+MoudleState.sec;
+  static uint32_t FirstTriggerTime;
+
+	timetmp = MoudleState.hour*3600 + MoudleState.min*60+MoudleState.sec;
+  //clear LightBarState while the time arrives at 23:58
+  if(timetmp >= 86339)
+  {
+     MoudleState.LightBarState = 0;
+  }
+  //get the first trigger time
+  if(MoudleState.LastPIR_State == 0 && MoudleState.PIR_State == 1)
+  {
+     FirstTriggerTime =  timetmp;
+  }
+ //meeting time
   if(IRQ_Time!=0)
   {
-    MoudleState.InUseTime = timetmp - IRQ_Time;
+    MoudleState.InUseTime = timetmp - FirstTriggerTime;
+    MoudleState.InUseTime = MoudleState.InUseTime > 59 ? MoudleState.InUseTime/60 : MoudleState.InUseTime;
     MoudleState.InUseTime = MoudleState.InUseTime >= 99 ? 99 : MoudleState.InUseTime;  
   }
-  Serial.print("InUseTime:"); Serial.println(MoudleState.InUseTime,DEC); 
-  Serial.print("timetmp:"); Serial.println(timetmp,DEC);   
-   Serial.print("IRQ_Time:"); Serial.println(IRQ_Time,DEC);  
-	if(timetmp - IRQ_Time >= PIR_CLEAR_TIME)
-	{
-    Serial.println("12");
-	  MoudleState.PIR_State = 0;
-	  MoudleState.InUseTime = 0;
+  
+  MoudleState.LastPIR_State = MoudleState.PIR_State;
+  //recover to zero state
+  if(timetmp - IRQ_Time >= PIR_CLEAR_TIME)
+  {
+    MoudleState.PIR_State = 0;
+    MoudleState.InUseTime = 0;
+    FirstTriggerTime = 0;
     IRQ_Time = 0;
-	}
+  }
+ 
 }
 
 
@@ -388,7 +403,7 @@ void MoudleClass::Loop(void)
 	GetClock();
 	KeyProc();
 	GetLightIntensity();
-	PIR_ClearState();
+	CheckState();
 }
 
 

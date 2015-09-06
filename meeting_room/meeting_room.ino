@@ -30,7 +30,13 @@ void setup() {
 void loop() {
   moudle.Loop();
   Serial.println(MoudleState.PIR_State);
-  if(MoudleState.PIR_State) {
+
+  //do nothing at the first time while PIR_State change to 1;
+  if(MoudleState.LastPIR_State == 0 && MoudleState.PIR_State == 1) {
+  
+  }
+  else if(MoudleState.PIR_State == 1) {
+
       print_in_use();
       clear_all();
       Serial.println(MoudleState.InUseTime,DEC);
@@ -38,7 +44,12 @@ void loop() {
       setNumber(2, MoudleState.InUseTime%10);
       timer_pixels.show();
 
-  } else {
+  } 
+  else if(MoudleState.LastPIR_State == 1 && MoudleState.PIR_State == 0) {
+	  clear_all();
+    setNumber(1,0);
+    setNumber(2,0);
+    timer_pixels.show();
     print_free();
   }
 
@@ -101,3 +112,4 @@ void clear_all() {
     timer_pixels.setPixelColor(i, 0);
   }
 }
+
