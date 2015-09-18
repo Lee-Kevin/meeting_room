@@ -12,10 +12,10 @@
 #define KEY5_PIN 17
 #define KEY6_PIN 18
 #define KEY7_PIN 19
-#define KEY8_PIN 10
-#define KEY9_PIN 9
+#define KEY8_PIN 20
+#define KEY9_PIN 21
 
-#define PIR_CLEAR_TIME 50
+#define PIR_CLEAR_TIME 30
 
 MoudleStateStruct MoudleState;
 uint32_t IRQ_Time = 0;
@@ -165,15 +165,15 @@ void MoudleClass::KeyProc(void)
 	if(key1==0 && lastkey1==1)
 	{
 	  MoudleState.button |= 0X01; 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X00003)>>(2*0);
-    Serial.print(Light_DualBitState);Serial.print("   ");
+	  Light_DualBitState = MoudleState.LightBarState & 0X00003;
+	  
 	  switch(Light_DualBitState)
 	  {
 		  case 0:
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*0))) & (~(0X02<<(2*0)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*0))) & (~(0X01<<(2*0)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*0))) & (~(0X01<<(2*0)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*0));
@@ -182,13 +182,12 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = MoudleState.LightBarState & (~(0X03<<(2*0)));
 		  break;
 	  }
-   Serial.println(MoudleState.LightBarState,BIN);
 	}
 	//
 	if(key2==0 && lastkey2==1)
 	{
 	  MoudleState.button |= (0X01<<1); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X0000C)>>(2*1);
+	  Light_DualBitState = MoudleState.LightBarState & 0X0000C;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -196,7 +195,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*1))) & (~(0X02<<(2*1)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*1))) & (~(0X01<<(2*1)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*1))) & (~(0X01<<(2*1)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*1));
@@ -210,7 +209,7 @@ void MoudleClass::KeyProc(void)
 	if(key3==0 && lastkey3==1)
 	{
 	  MoudleState.button |= (0X01<<2); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X00030)>>(2*2);
+	  Light_DualBitState = MoudleState.LightBarState & 0X00030;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -218,7 +217,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*2))) & (~(0X02<<(2*2)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*2))) & (~(0X01<<(2*2)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*2))) & (~(0X01<<(2*2)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*2));
@@ -232,7 +231,7 @@ void MoudleClass::KeyProc(void)
 	if(key4==0 && lastkey4==1)
 	{
 	  MoudleState.button |= (0X01<<3); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X000C0)>>(2*3);
+	  Light_DualBitState = MoudleState.LightBarState & 0X000C0;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -240,7 +239,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*3))) & (~(0X02<<(2*3)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*3))) & (~(0X01<<(2*3)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*3))) & (~(0X01<<(2*3)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*3));
@@ -254,7 +253,7 @@ void MoudleClass::KeyProc(void)
 	if(key5==0 && lastkey5==1)
 	{
 	  MoudleState.button |= (0X01<<4); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X00300)>>(2*4);
+	  Light_DualBitState = MoudleState.LightBarState & 0X00300;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -262,7 +261,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*4))) & (~(0X02<<(2*4)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*4))) & (~(0X01<<(2*4)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*4))) & (~(0X01<<(2*4)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*4));
@@ -276,7 +275,7 @@ void MoudleClass::KeyProc(void)
 	if(key6 ==0 && lastkey6==1)
 	{
 	  MoudleState.button |= (0X01<<5); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X00C00)>>(2*5);
+	  Light_DualBitState = MoudleState.LightBarState & 0X00C00;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -284,7 +283,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*5))) & (~(0X02<<(2*5)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*5))) & (~(0X01<<(2*5)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*5))) & (~(0X01<<(2*5)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*5));
@@ -298,7 +297,7 @@ void MoudleClass::KeyProc(void)
 	if(key7==0 && lastkey7==1)
 	{
 	  MoudleState.button |= (0X01<<6); 
-	  Light_DualBitState = (MoudleState.LightBarState & 0X03000)>>(2*6);
+	  Light_DualBitState = MoudleState.LightBarState & 0X03000;
 	  
 	  switch(Light_DualBitState)
 	  {
@@ -306,7 +305,7 @@ void MoudleClass::KeyProc(void)
 		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*6))) & (~(0X02<<(2*6)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X02<<(2*6))) & (~(0X01<<(2*6)));
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*6))) & (~(0X01<<(2*6)));
 		  break;
 		  case 2:
 		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*6));
@@ -320,25 +319,21 @@ void MoudleClass::KeyProc(void)
 	if(key8==0 && lastkey8==1)
 	{
 	  MoudleState.button |= (0X01<<7); 
-	  Light_DualBitState = ((MoudleState.LightBarState & 0X0C000)>>7)>>7;
+	  Light_DualBitState = MoudleState.LightBarState & 0X0C000;
 	  
 	  switch(Light_DualBitState)
 	  {
 		  case 0:
-		    MoudleState.LightBarState = (MoudleState.LightBarState | 0X4000) & (~0X8000);
-       Serial.print("0");
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*7))) & (~(0X02<<(2*7)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState =( MoudleState.LightBarState | 0X8000) & (~0X4000);
-       Serial.print("1");
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*7))) & (~(0X01<<(2*7)));
 		  break;
 		  case 2:
-		    MoudleState.LightBarState = MoudleState.LightBarState | (0XC000);
-       Serial.print("2");
+		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*7));
 		  break;
 		  case 3:
-		    MoudleState.LightBarState = MoudleState.LightBarState & (~0XC000);
-       Serial.print("3");
+		    MoudleState.LightBarState = MoudleState.LightBarState & (~(0X03<<(2*7)));
 		  break;
 	  }
 	}
@@ -346,21 +341,21 @@ void MoudleClass::KeyProc(void)
 	if(key9==0 && lastkey9==1)
 	{
 	  MoudleState.button |= (0X01<<8); 
-	  Light_DualBitState = ((MoudleState.LightBarState & 0X30000)>>8)>>8;
+	  Light_DualBitState = MoudleState.LightBarState & 0X30000;
 	  
 	  switch(Light_DualBitState)
 	  {
 		  case 0:
-		    MoudleState.LightBarState = MoudleState.LightBarState | (0X10000) & (~0X20000);
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X01<<(2*8))) & (~(0X02<<(2*8)));
 		  break;
 		  case 1:
-		    MoudleState.LightBarState =( MoudleState.LightBarState | (0X20000)) & (~0X10000);
+		    MoudleState.LightBarState = (MoudleState.LightBarState | (0X20<<(2*8))) & (~(0X01<<(2*8)));
 		  break;
 		  case 2:
-		    MoudleState.LightBarState = MoudleState.LightBarState | (0X30000);
+		    MoudleState.LightBarState = MoudleState.LightBarState | (0X03<<(2*8));
 		  break;
 		  case 3:
-		    MoudleState.LightBarState = MoudleState.LightBarState & (~0X30000);
+		    MoudleState.LightBarState = MoudleState.LightBarState & (~(0X03<<(2*8)));
 		  break;
 	  }
 	}

@@ -12,6 +12,7 @@ Adafruit_NeoPixel strip_pixels = Adafruit_NeoPixel(18, 4, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("hello!");
   moudle.SetClock(2015,8,8,19,23,30,1);
   moudle.MoudleInit();
 
@@ -23,17 +24,22 @@ void setup() {
 
   strip_pixels.begin();
   strip_pixels.setBrightness(10);
+
 }
 
 void loop() {
   moudle.Loop();
+  Serial.println(MoudleState.PIR_State);
+
   //do nothing at the first time while PIR_State change to 1;
   if(MoudleState.LastPIR_State == 0 && MoudleState.PIR_State == 1) {
   
   }
   else if(MoudleState.PIR_State == 1) {
+
       print_in_use();
       clear_all();
+      Serial.println(MoudleState.InUseTime,DEC);
       setNumber(1, MoudleState.InUseTime/10);
       setNumber(2, MoudleState.InUseTime%10);
       timer_pixels.show();
@@ -48,16 +54,12 @@ void loop() {
   }
 
   for(int i=0; i<18; i++) {
-    if(i>=16)
-    {
-      strip_pixels.setPixelColor(i, strip_pixels.Color(0,(MoudleState.LightBarState & (0X00010000)) != 0 ? 255 : 0,0));
-      strip_pixels.setPixelColor(i+1, strip_pixels.Color(0,(MoudleState.LightBarState & (0X00020000)) != 0 ? 255 : 0,0));
-      break;
-    }
-    strip_pixels.setPixelColor(i, strip_pixels.Color(0,(MoudleState.LightBarState & (0X01<<i)) != 0 ? 255 : 0,0));
+    strip_pixels.setPixelColor(i, strip_pixels.Color(0,150,0));
   }
   strip_pixels.show();
-  delay(100);
+
+  delay(1000);
+
 }
 
 /* ----------Matrix--------------*/
@@ -97,6 +99,7 @@ void setNumber(int index, int num) {
       break;
     if (NUMBER[num][i] == 6)
       mbreak = true;
+    Serial.println();
     for(int j=0; j<EVERY_PIXEL; j++) {
       int stroke_number = NUMBER[num][i];
       timer_pixels.setPixelColor(PIXEL_INDEX[index-1][stroke_number][j]-1, timer_pixels.Color(RED,GREEN, BLUE));
